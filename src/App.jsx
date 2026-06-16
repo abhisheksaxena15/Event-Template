@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import bannerImg from "./assets/1650x450--Ahmedabad.jpg";
 import bannerMobile from "./assets/850x450-Ahmedabad.jpg";
-import insightImage from "./assets/image.png";
 
 const styles = {
 
@@ -452,18 +451,13 @@ const styles = {
   },
 };
 
-const pillars = [
-  { num: "01", label: "Next-level\nsecurity", color: "#00C48C" },
-  { num: "02", label: "Seamless\nmodernization", color: "#55D6F5" },
-  { num: "03", label: "Energy\nefficiency", color: "#7B61FF" },
-  { num: "04", label: "AI driven\nautomation", color: "#007BFF" },
-];
 
-const bizItems = [
-  "Market dynamics shaping demand for servers and Windows licenses.",
-  "Enterprise IT priorities and the challenges customers face today.",
-  "Powering next-gen workloads with HPE ProLiant Compute Gen12 and Microsoft's latest innovations.",
-];
+
+// const bizItems = [
+//   "Market dynamics shaping demand for servers and Windows licenses.",
+//   "Enterprise IT priorities and the challenges customers face today.",
+//   "Powering next-gen workloads with HPE ProLiant Compute Gen12 and Microsoft's latest innovations.",
+// ];
 
 const RegisterBtn = ({ small = false }) => (
   <a
@@ -634,7 +628,7 @@ export default function HPEEmailTemplate() {
           <RegisterBtn />
         </div>
 
-        {/* ── Technical Insights ── */}
+        {/* ── Technical Insights ──
         <div style={styles.insightsSection}>
   {isMobile ? (
     // ── MOBILE (new clean UI) ──────────────────────────────
@@ -724,7 +718,7 @@ export default function HPEEmailTemplate() {
       </div>
     </div>
   )}
-</div>
+</div> */}
 
         {/* ── Registration Form Section (Replacing simple button with image_07be63.png layouts) ── */}
         <div style={styles.detailsSection}>
@@ -922,7 +916,7 @@ export default function HPEEmailTemplate() {
       </div>*/}
 
         {/* ── Closing ── */}
-        <div style={styles.closingSection}>
+        {/* <div style={styles.closingSection}>
           <div style={styles.closingBox}>
             <div style={styles.closingBoxTitle}>We look forward to your participation!</div>
             <span style={styles.closingBoxText}>
@@ -938,7 +932,7 @@ export default function HPEEmailTemplate() {
         </div>
 
         {/* ── Partner Bar ── */}
-        <div style={styles.partnerBar}>
+        {/* <div style={styles.partnerBar}>
           <div style={styles.amdLogo}>
             AMD<span style={styles.amdArrow}>↑</span>
           </div>
@@ -957,10 +951,10 @@ export default function HPEEmailTemplate() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* ── Footer ── */}
-        <div style={styles.footer}>
+        {/* <div style={styles.footer}>
           <p style={styles.footerP}>
             You are receiving this email as a partner of the Hewlett Packard Enterprise. If
             you prefer not to receive future communications, you may{" "}
@@ -1000,7 +994,7 @@ export default function HPEEmailTemplate() {
               All third-party marks are property of their respective owners.
             </p>
           </div>
-        </div>
+        </div> */}
 
       </div>
     </div>
