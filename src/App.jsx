@@ -27,7 +27,6 @@ const styles = {
   hero: {
 
     position: "relative",
-    backgroundImage: `url(${bannerImg})`,
     backgroundSize: "COVER", //"100% auto",
     backgroundPosition: "center", //top center",
     backgroundRepeat: "no-repeat",
@@ -453,23 +452,9 @@ const styles = {
 
 
 
-// const bizItems = [
-//   "Market dynamics shaping demand for servers and Windows licenses.",
-//   "Enterprise IT priorities and the challenges customers face today.",
-//   "Powering next-gen workloads with HPE ProLiant Compute Gen12 and Microsoft's latest innovations.",
-// ];
 
-const RegisterBtn = ({ small = false }) => (
-  <a
-    href="#registration-form"
-    style={{
-      ...styles.ctaBtn,
-      ...(small ? { fontSize: 14, padding: "10px 22px" } : {}),
-    }}
-  >
-    Register now &nbsp;→
-  </a>
-);
+
+
 
 export default function HPEEmailTemplate() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -500,7 +485,8 @@ export default function HPEEmailTemplate() {
     }));
   };
 
-  const handleFormSubmit = (e) => {
+
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -516,487 +502,276 @@ export default function HPEEmailTemplate() {
     if (!formData.complianceChecked) {
       alert("Please confirm corporate compliance check to complete submission.");
       return;
+    }   
+
+    try {
+      const response = await fetch(
+        "https://tech-tales.com/hpe/submit.php",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      const result = await response.json();
+
+      if (result.success) {
+        alert("Registration submitted successfully");
+        setSubmitted(true);
+      } else {
+        alert("Submission failed");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Network error");
     }
-    setSubmitted(true);
+
   };
-  if (submitted) {
-    return (
-      <div style={styles.successContainer}>
-        <h2>Thank You!</h2>
-        <p>Your registration has been submitted successfully.</p>
-      </div>
-    );
-  }
 
 
-  return (
-    <div style={styles.root}>
-      <div style={styles.wrapper}>
+return (
+  <div style={styles.root}>
+    <div style={styles.wrapper}>
 
-        {/* ── Hero ── */}
-        <div
-          style={{
-            ...styles.hero,
-            backgroundImage: `url(${isMobile ? bannerMobile : bannerImg})`,
-            height: isMobile ? "55vw" : "27vw",        // ← mobile gets proportional height
-            minHeight: isMobile ? 180 : 250,
-            backgroundPosition: isMobile ? "center center" : "top center",
-          }}
-        >        {/* <div style={styles.heroOverlay} /> */}
-          <div style={styles.heroBadge} />
-          <div style={styles.logoBar}>
-            {/* HP<span style={styles.logoAccent}>E</span> */}
-          </div>
+      {/* ── Hero ── */}
+      <div
+        style={{
+          ...styles.hero,
+          backgroundImage: `url(${isMobile ? bannerMobile : bannerImg})`,
+          height: isMobile ? "55vw" : "27vw",        // ← mobile gets proportional height
+          minHeight: isMobile ? 180 : 250,
+          backgroundPosition: isMobile ? "center center" : "top center",
+        }}
+      >        {/* <div style={styles.heroOverlay} /> */}
+        <div style={styles.heroBadge} />
+        <div style={styles.logoBar}>
+          {/* HP<span style={styles.logoAccent}>E</span> */}
         </div>
+      </div>
 
-        {/* ── Body ── */}
-        {/* <div style={styles.bodySection}>
-        <p style={styles.bodyP}>
-          Dear Partner,
+
+      <div style={styles.bodySection}>
+        {/* <p style={styles.agendaHeading}>Dear Partner,</p> */}
+
+        <p style={styles.agendaListItem}>
+          Enterprises today are taking a bolder move to adopt platforms that can improve their productivity,
+          automate day-to-day operation and bring seamless experience for their end users.
+          Legacy systems are becoming irrelevant and are getting replaced by more intelligent infrastructure
+          that reduce maintenance costs, eliminate data silos, and improve scalability.
         </p>
 
-        <p style={styles.bodyP}>
-          Legacy systems were built for yesterday's challenges.
+        <p style={styles.agendaListItem}>
+          We have designed a program to help partners drive the modernization conversation with end customers
+          using HPE ProLiant compute powered by AMD EPYC processors and innovations led by Microsoft.
         </p>
 
-        <p style={styles.bodyP}>
-          In today’s fast-evolving enterprise landscape, modernization is a necessity.
-          Businesses are seeking{" "}
-          <span style={styles.bold}>
-            intelligent, scalable, and future-ready solutions
-          </span>{" "}
-          that accelerate innovation, reduce operational costs, and deliver seamless
-          experiences for end users.
+        {/* ── Section: What's in Store ── */}
+        <h3 style={styles.agendaHeading}>What's in Store</h3>
+        <div style={styles.agendaSubheading}>Technical Deep Dives:</div>
+        <ul style={styles.agendaList}>
+          <li style={styles.agendaListItem}><span style={styles.bulletDot} />Energy efficiency & sustainability</li>
+          <li style={styles.agendaListItem}><span style={styles.bulletDot} />Flexible architecture & modernization</li>
+          <li style={styles.agendaListItem}><span style={styles.bulletDot} />Next-level security</li>
+          <li style={styles.agendaListItem}><span style={styles.bulletDot} />AI-driven management</li>
+        </ul>
+
+        {/* ── Section: Notable Insights ── */}
+        <h3 style={styles.agendaHeading}>Notable Insights for Partners</h3>
+        <ul style={styles.agendaList}>
+          <li style={styles.agendaListItem}><span style={styles.bulletDot} />Technology trends driving server and Windows licenses demand in the market.</li>
+          <li style={styles.agendaListItem}><span style={styles.bulletDot} />Key customer challenges and evolving Enterprise IT priorities.</li>
+          <li style={styles.agendaListItem}><span style={styles.bulletDot} />HPE ProLiant Compute Gen12 value proposition and Microsoft innovations.</li>
+          <li style={styles.agendaListItem}><span style={styles.bulletDot} />Critical role of the partners</li>
+        </ul>
+
+        {/* ── Section: Networking Opportunities ── */}
+        <h3 style={styles.agendaHeading}>Networking Opportunities</h3>
+        <p style={styles.agendaListItem}>
+          Connect with fellow HPE, AMD and Microsoft professionals during exclusive networking sessions offering the perfect atmosphere to exchange ideas and build valuable relationships.
         </p>
 
-        <p style={styles.bodyP}>
-          To help you lead this transformation, we’re excited to invite you to the{" "}
-          <span style={styles.bold}>
-            Explore Next with HPE ProLiant Compute
-          </span>
-          , a curated program designed to equip you with the tools, insights, and
-          strategies needed to drive customer conversations and accelerate adoption
-          of next-generation compute solutions.
+
+      </div>
+
+
+      {/* ── CTA ── */}
+      
+
+
+
+      {/* ── Registration Form Section (Replacing simple button with image_07be63.png layouts) ── */}
+      <div style={styles.detailsSection}>
+        <h1 style={styles.sectionTitle}>Details</h1>
+
+        <p style={styles.detailRow}>
+          <span style={styles.detailLabel}>Dates: </span>
+          <span style={styles.detailValue}>June 26, 2026</span>
         </p>
-      </div> */}
-        <div style={styles.bodySection}>
-          {/* <p style={styles.agendaHeading}>Dear Partner,</p> */}
 
-          <p style={styles.agendaListItem}>
-            Enterprises today are taking a bolder move to adopt platforms that can improve their productivity,
-            automate day-to-day operation and bring seamless experience for their end users.
-            Legacy systems are becoming irrelevant and are getting replaced by more intelligent infrastructure
-            that reduce maintenance costs, eliminate data silos, and improve scalability.
-          </p>
+        <p style={styles.detailRow}>
+          <span style={styles.detailLabel}>Time: </span>
+          <span style={styles.detailValue}>11:00 AM</span>
+        </p>
 
-          <p style={styles.agendaListItem}>
-            We have designed a program to help partners drive the modernization conversation with end customers
-            using HPE ProLiant compute powered by AMD EPYC processors and innovations led by Microsoft.
-          </p>
+        <p style={styles.detailRow}>
+          <span style={styles.detailLabel}>Venue: </span>
+          <span style={styles.detailValue}>Taj Skyline, Ahemdabad</span>
+        </p>
 
-          {/* ── Section: What's in Store ── */}
-          <h3 style={styles.agendaHeading}>What's in Store</h3>
-          <div style={styles.agendaSubheading}>Technical Deep Dives:</div>
-          <ul style={styles.agendaList}>
-            <li style={styles.agendaListItem}><span style={styles.bulletDot} />Energy efficiency & sustainability</li>
-            <li style={styles.agendaListItem}><span style={styles.bulletDot} />Flexible architecture & modernization</li>
-            <li style={styles.agendaListItem}><span style={styles.bulletDot} />Next-level security</li>
-            <li style={styles.agendaListItem}><span style={styles.bulletDot} />AI-driven management</li>
-          </ul>
+        <hr />
 
-          {/* ── Section: Notable Insights ── */}
-          <h3 style={styles.agendaHeading}>Notable Insights for Partners</h3>
-          <ul style={styles.agendaList}>
-            <li style={styles.agendaListItem}><span style={styles.bulletDot} />Technology trends driving server and Windows licenses demand in the market.</li>
-            <li style={styles.agendaListItem}><span style={styles.bulletDot} />Key customer challenges and evolving Enterprise IT priorities.</li>
-            <li style={styles.agendaListItem}><span style={styles.bulletDot} />HPE ProLiant Compute Gen12 value proposition and Microsoft innovations.</li>
-            <li style={styles.agendaListItem}><span style={styles.bulletDot} />Critical role of the partners</li>
-          </ul>
+        <h3 style={styles.subHeading}>
+          Please enter your details below :
+        </h3>
+        <form onSubmit={handleFormSubmit}>
+          <input
+            type="text"
+            name="fullName"
+            value={formData.fullName}
+            onChange={handleInputChange}
+            style={styles.input}
+            placeholder="Name"
+            required
+          />
 
-          {/* ── Section: Networking Opportunities ── */}
-          <h3 style={styles.agendaHeading}>Networking Opportunities</h3>
-          <p style={styles.agendaListItem}>
-            Connect with fellow HPE, AMD and Microsoft professionals during exclusive networking sessions offering the perfect atmosphere to exchange ideas and build valuable relationships.
-          </p>
+          <input
+            type="text"
+            name="designation"
+            value={formData.designation}
+            onChange={handleInputChange}
+            style={styles.input}
+            placeholder="Designation"
+          />
 
+          <input
+            type="text"
+            name="companyName"
+            value={formData.companyName}
+            onChange={handleInputChange}
+            style={styles.input}
+            placeholder="Company Name"
+          />
 
-        </div>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            style={styles.input}
+            placeholder="Email Id"
+            required
+          />
 
+          <input
+            type="text"
+            name="contactNumber"
+            value={formData.contactNumber}
+            onChange={handleInputChange}
+            style={styles.input}
+            placeholder="Contact Number"
+            maxLength={10}
+            required />
 
-        {/* ── CTA ── */}
-        <div id="registration-form" style={styles.ctaWrap}>
-          <RegisterBtn />
-        </div>
+          <input
+            type="text"
+            name="city"
+            value={formData.city}
+            onChange={handleInputChange}
+            style={styles.input}
+            placeholder="City"
+          />
 
-        {/* ── Technical Insights ──
-        <div style={styles.insightsSection}>
-  {isMobile ? (
-    // ── MOBILE (new clean UI) ──────────────────────────────
-    <div style={{ textAlign: "left" }}>
-      <div style={styles.sectionTitle}>Technical insights</div>
-      <div style={{
-        fontSize: "15px",
-        lineHeight: 1.45,
-        color: "#2f3542",
-        fontWeight: 500,
-        marginBottom: "24px",
-      }}>
-        Explore the latest innovations in compute technology and how HPE, AMD, and
-        Microsoft are offering future-ready enterprise infrastructure, and propelling
-        businesses forward with:
-      </div>
-      <div style={{ textAlign: "center", marginBottom: "24px" }}>
-        <img src={insightImage} alt="Technical Insights"
-          style={{ width: "55%", height: "auto", objectFit: "contain" }} />
-      </div>
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        gap: "16px",
-      }}>
-        {pillars.map((p) => (
-          <div key={p.num} style={{
-            backgroundColor: "#ffffff",
-            borderRadius: "10px",
-            padding: "16px 12px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-            gap: "10px",
-            boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
-          }}>
-            <div style={{ position: "relative", width: 48, height: 48 }}>
-              <div style={{
-                position: "absolute", width: 48, height: 48,
-                backgroundColor: p.color, top: -5, left: -5,
-                borderRadius: "4px", opacity: 0.3,
-              }} />
-              <div style={{
-                position: "relative", width: 48, height: 48,
-                backgroundColor: "#fff", border: "1px solid #ccc",
-                borderRadius: "4px", display: "flex",
-                alignItems: "center", justifyContent: "center",
-                fontSize: 18, fontWeight: 700, color: "#000", zIndex: 1,
-              }}>{p.num}</div>
-            </div>
-            <div style={{
-              fontSize: "14px", fontWeight: 600,
-              color: "#1a1a1a", lineHeight: 1.3, whiteSpace: "pre-line",
-            }}>{p.label}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  ) : (
-    // ── DESKTOP (original untouched) ───────────────────────
-    <div style={styles.insightsInner}>
-      <div style={{ flex: 1, textAlign: "left", alignSelf: "flex-start" }}>
-        <div style={styles.sectionTitle}>Technical insights</div>
-        <div style={styles.sectionDesc}>
-          Explore the latest innovations in compute technology and how HPE, AMD, and
-          Microsoft are offering future-ready enterprise infrastructure, and propelling
-          businesses forward with:
-        </div>
-        <div style={styles.pillarsGrid}>
-          {pillars.map((p) => (
-            <div key={p.num} style={styles.pillar}>
-              <div style={{ position: "relative", flexShrink: 0 }}>
-                <div style={{
-                  position: "absolute", width: 48, height: 48,
-                  backgroundColor: p.color, top: -6, left: -6,
-                }} />
-                <div style={styles.pillarNum}>{p.num}</div>
-              </div>
-              <div style={styles.pillarLabel}>{p.label}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div style={styles.serverIcon}>
-        <img src={insightImage} alt="Technical Insights"
-          style={{ width: "100%", height: "auto", display: "block", objectFit: "contain" }} />
-      </div>
-    </div>
-  )}
-</div> */}
+          <input
+            type="text"
+            name="stateName"
+            value={formData.stateName}
+            onChange={handleInputChange}
+            style={styles.input}
+            placeholder="State"
+          />
 
-        {/* ── Registration Form Section (Replacing simple button with image_07be63.png layouts) ── */}
-        <div style={styles.detailsSection}>
-          <h1 style={styles.sectionTitle}>Details</h1>
-
-          <p style={styles.detailRow}>
-            <span style={styles.detailLabel}>Dates: </span>
-            <span style={styles.detailValue}>June 26, 2026</span>
-          </p>
-
-          <p style={styles.detailRow}>
-            <span style={styles.detailLabel}>Time: </span>
-            <span style={styles.detailValue}>11:00 AM</span>
-          </p>
-
-          <p style={styles.detailRow}>
-            <span style={styles.detailLabel}>Venue: </span>
-            <span style={styles.detailValue}>ITC Sonar, Kolkata</span>
-          </p>
-
-          <hr />
-
-          <h3 style={styles.subHeading}>
-            Please enter your details below :
-          </h3>
-          <form onSubmit={handleFormSubmit}>
-            <input
-              type="text"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleInputChange}
-              style={styles.input}
-              placeholder="Name"
-              required
-            />
-
-            <input
-              type="text"
-              name="designation"
-              value={formData.designation}
-              onChange={handleInputChange}
-              style={styles.input}
-              placeholder="Designation"
-            />
-
-            <input
-              type="text"
-              name="companyName"
-              value={formData.companyName}
-              onChange={handleInputChange}
-              style={styles.input}
-              placeholder="Company Name"
-            />
-
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              style={styles.input}
-              placeholder="Email Id"
-              required
-            />
-
-            <input
-              type="text"
-              name="contactNumber"
-              value={formData.contactNumber}
-              onChange={handleInputChange}
-              style={styles.input}
-              placeholder="Contact Number"
-              maxLength={10}
-              required />
-
-            <input
-              type="text"
-              name="city"
-              value={formData.city}
-              onChange={handleInputChange}
-              style={styles.input}
-              placeholder="City"
-            />
-
-            <input
-              type="text"
-              name="state"
-              value={formData.state}
-              onChange={handleInputChange}
-              style={styles.input}
-              placeholder="State"
-            />
-
-            <div style={styles.consentSection}>
-              <p style={styles.consentText}>
-                For more information on how HPE manages, uses and protects your
-                information please refer to{" "}
-                <a
-                  href="https://www.hpe.com/in/en/legal/privacy.html"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={styles.link}
-                >
-                  HPE Privacy Statement
-                </a>
-                . You can always withdraw or modify your consent to receive marketing
-                communication from HPE. This can be done by using the opt-out and
-                preference mechanism at the bottom of our email marketing communication
-                or by following this{" "}
-                <a
-                  href="https://www.hpe.com/in/en/legal/privacy.html"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={styles.link}
-                >
-                  link
-                </a>
-                .
-              </p>
-
-              <p style={styles.consentText}>
-                If you have provided your mobile number to receive marketing
-                communications, please note that roaming charges may apply.
-              </p>
-
-              <p style={styles.consentText}>
-                By completing and submitting this form to HPE you acknowledge and
-                consent to HPE’s collection and use of your personal information in
-                accordance with{" "}
-                <a
-                  href="https://www.hpe.com/in/en/legal/privacy.html"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={styles.link}
-                >
-                  HPE's Privacy Statement
-                </a>
-                .
-              </p>
-
-              <p style={styles.consentText}>
-                By registering and participating, you consent to HPE using photos
-                and/or video taken during the event for Marketing purposes.
-              </p>
-            </div>
-
-            <div style={styles.checkboxRow}>
-              <input
-                type="checkbox"
-                name="complianceChecked"
-                checked={formData.complianceChecked}
-                onChange={handleInputChange}
-                style={styles.checkbox}
-              />            <label style={styles.checkboxLabel}>
-                By submitting my registration, I am likely to participate in the HPE
-                Unlocking Ambitions and I will only accept amenities or gifts that
-                are not prohibited by my organisation's policies. I confirm that I
-                (and not Hewlett Packard Enterprise) shall be responsible for
-                managing compliance with my organisation's policies.
-              </label>
-            </div>
-
-
-
-            <button type="submit" style={styles.submitBtn}>
-              Submit &nbsp;→
-            </button>
-
-          </form>
-
-
-        </div>
-        {/* ── Business Insights ── */}
-        {/* <div style={styles.bizSection}>
-        <div style={styles.sectionTitle}>Business insights and trends</div>
-        <div style={{ ...styles.sectionDesc, marginBottom: 16 }}>
-          Gain a competitive edge with:
-        </div>
-        <div style={styles.bizInner}>
-          <div style={styles.bizIconWrap}>📊</div>
-          <ul style={styles.bizList}>
-            {bizItems.map((item, i) => (
-              <li
-                key={i}
-                style={{
-                  ...styles.bizListItem,
-                  ...(i === bizItems.length - 1 ? { borderBottom: "none" } : {}),
-                }}
+          <div style={styles.consentSection}>
+            <p style={styles.consentText}>
+              For more information on how HPE manages, uses and protects your
+              information please refer to{" "}
+              <a
+                href="https://www.hpe.com/in/en/legal/privacy.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={styles.link}
               >
-                <span style={styles.bizDot} />
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div> 
-      </div>*/}
-
-        {/* ── Closing ── */}
-        {/* <div style={styles.closingSection}>
-          <div style={styles.closingBox}>
-            <div style={styles.closingBoxTitle}>We look forward to your participation!</div>
-            <span style={styles.closingBoxText}>
-              Join us for an insightful, actionable, and collaborative experience that
-              strengthens our partnership and accelerates shared success.
-            </span>
-          </div>
-          <div style={styles.regards}>
-            Regards
-            <br />
-            <strong>Team HPE</strong>
-          </div>
-        </div>
-
-        {/* ── Partner Bar ── */}
-        {/* <div style={styles.partnerBar}>
-          <div style={styles.amdLogo}>
-            AMD<span style={styles.amdArrow}>↑</span>
-          </div>
-          <div style={styles.msBadge}>
-            <div style={styles.msGrid}>
-              <div style={{ background: "#F25022", borderRadius: 1 }} />
-              <div style={{ background: "#7FBA00", borderRadius: 1 }} />
-              <div style={{ background: "#00A4EF", borderRadius: 1 }} />
-              <div style={{ background: "#FFB900", borderRadius: 1 }} />
-            </div>
-            <div>
-              <div style={styles.msName}>Microsoft</div>
-              <div style={styles.wsBadge}>
-                <strong style={styles.wsBadgeStrong}>Windows Server 2025</strong>
-                Advanced security and resiliency
-              </div>
-            </div>
-          </div>
-        </div> */}
-
-        {/* ── Footer ── */}
-        {/* <div style={styles.footer}>
-          <p style={styles.footerP}>
-            You are receiving this email as a partner of the Hewlett Packard Enterprise. If
-            you prefer not to receive future communications, you may{" "}
-            <a href="#" style={styles.footerLink}>unsubscribe here</a>.
-          </p>
-          <p style={styles.footerP}>
-            For more information regarding HPE's privacy policies, please visit the{" "}
-            <a
-              href="https://www.hpe.com/in/en/legal/privacy.html"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={styles.footerLink}
-            >
-              HPE Privacy Statement
-            </a>        </p>
-          <p style={styles.footerP}>
-            Was this email forwarded to you? To receive it directly from HPE, please{" "}
-            <a
-              href="#registration-form"
-              style={styles.footerLink}
-            >
-              register
-            </a>          Ready Portal account.
-          </p>
-          <div style={styles.footerCopy}>
-            <p style={styles.footerCopyP}>
-              © 2026 Hewlett Packard Enterprise Development LP. All rights reserved. All
-              product and company names referenced herein are trademarks of their respective
-              owners.
+                HPE Privacy Statement
+              </a>
+              . You can always withdraw or modify your consent to receive marketing
+              communication from HPE. This can be done by using the opt-out and
+              preference mechanism at the bottom of our email marketing communication
+              or by following this{" "}
+              <a
+                href="https://www.hpe.com/in/en/legal/privacy.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={styles.link}
+              >
+                link
+              </a>
+              .
             </p>
-            <p style={styles.footerCopyP}>
-              AMD and the AMD Arrow logo are trademarks of Advanced Micro Devices, Inc.
+
+            <p style={styles.consentText}>
+              If you have provided your mobile number to receive marketing
+              communications, please note that roaming charges may apply.
             </p>
-            <p style={styles.footerCopyP}>
-              Microsoft, Windows, and Windows Server are either registered trademarks or
-              trademarks of Microsoft Corporation in the United States and/or other countries.
-              All third-party marks are property of their respective owners.
+
+            <p style={styles.consentText}>
+              By completing and submitting this form to HPE you acknowledge and
+              consent to HPE’s collection and use of your personal information in
+              accordance with{" "}
+              <a
+                href="https://www.hpe.com/in/en/legal/privacy.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={styles.link}
+              >
+                HPE's Privacy Statement
+              </a>
+              .
+            </p>
+
+            <p style={styles.consentText}>
+              By registering and participating, you consent to HPE using photos
+              and/or video taken during the event for Marketing purposes.
             </p>
           </div>
-        </div> */}
 
+          <div style={styles.checkboxRow}>
+            <input
+              type="checkbox"
+              name="complianceChecked"
+              checked={formData.complianceChecked}
+              onChange={handleInputChange}
+              style={styles.checkbox}
+            />            <label style={styles.checkboxLabel}>
+              By submitting my registration, I am likely to participate in the HPE
+              Unlocking Ambitions and I will only accept amenities or gifts that
+              are not prohibited by my organisation's policies. I confirm that I
+              (and not Hewlett Packard Enterprise) shall be responsible for
+              managing compliance with my organisation's policies.
+            </label>
+          </div>
+
+
+
+          <button type="submit" style={styles.submitBtn}>
+            Submit &nbsp;→
+          </button>
+
+        </form>
       </div>
+
     </div>
-  );
+  </div>
+);
 }
